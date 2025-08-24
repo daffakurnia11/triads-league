@@ -32,30 +32,35 @@ end
 ---@param point CPoint
 local function onEnterShop(point)
 	if not point.entity then
-		local model = lib.requestModel(point.ped)
+		local modelName = point.model or (shopTypes[point.type] and shopTypes[point.type].model) or 's_m_m_autoshop_01'
 
-		if not model then return end
+		if not lib.requestModel(modelName) then return end
 
-		local entity = CreatePed(0, model, point.coords.x, point.coords.y, point.coords.z, point.heading, false, true)
+		local x, y, z = point.coords.x, point.coords.y, point.coords.z
 
-		if point.scenario then TaskStartScenarioInPlace(entity, point.scenario, 0, true) end
+		local entity = CreatePed(0, joaat(modelName), x, y, z, point.heading or 0.0, false, true)
 
-		SetModelAsNoLongerNeeded(model)
+		SetEntityAsMissionEntity(entity, true, true)
 		FreezeEntityPosition(entity, true)
 		SetEntityInvincible(entity, true)
 		SetBlockingOfNonTemporaryEvents(entity, true)
 
+		if point.scenario then TaskStartScenarioInPlace(entity, point.scenario, 0, true) end
+
+		SetModelAsNoLongerNeeded(joaat(modelName))
+
+
 		exports.ox_target:addLocalEntity(entity, {
-            {
-                icon = point.icon or 'fas fa-shopping-basket',
-                label = point.label,
-                groups = point.groups,
-                onSelect = function()
-                    client.openInventory('shop', { id = point.invId, type = point.type })
-                end,
-                iconColor = point.iconColor,
-                distance = point.shopDistance or 2.0
-            }
+				{
+						icon = point.icon or 'fas fa-shopping-basket',
+						label = point.label,
+						groups = point.groups,
+						onSelect = function()
+								client.openInventory('shop', { id = point.invId, type = point.type })
+						end,
+						iconColor = point.iconColor,
+						distance = point.shopDistance or 2.0
+				}
 		})
 
 		point.entity = entity
@@ -114,22 +119,7 @@ local function refreshShops()
 		local label = shop.label or locale('open_label', shop.name)
 
 		if shared.target then
-			if shop.model then
-				if not hasShopAccess(shop) then goto skipLoop end
-
-				exports.ox_target:removeModel(shop.model, shop.name)
-				exports.ox_target:addModel(shop.model, {
-                    {
-                        name = shop.name,
-                        icon = shop.icon or 'fas fa-shopping-basket',
-                        label = label,
-                        onSelect = function()
-                            client.openInventory('shop', { type = type })
-                        end,
-                        distance = 2
-                    },
-				})
-			elseif shop.targets then
+			if shop.targets then
 				for i = 1, #shop.targets do
 					local target = shop.targets[i]
 					local shopid = ('%s-%s'):format(type, i)
@@ -162,24 +152,39 @@ local function refreshShops()
 
 						shops[id] = {
 							zoneId = Utils.CreateBoxZone(target, {
-                                {
-                                    name = shopid,
-                                    icon = shop.icon or 'fas fa-shopping-basket',
-                                    label = label,
-                                    groups = shop.groups,
-                                    onSelect = function()
-                                        client.openInventory('shop', { id = i, type = type })
-                                    end,
-                                    iconColor = target.iconColor,
-                                    distance = target.distance
-                                }
-                            }),
+									{
+											name = shopid,
+											icon = shop.icon or 'fas fa-shopping-basket',
+											label = label,
+											groups = shop.groups,
+											onSelect = function()
+													client.openInventory('shop', { id = i, type = type })
+											end,
+											iconColor = target.iconColor,
+											distance = target.distance
+									}
+							}),
 							blip = blip and createBlip(blip, target.coords)
 						}
 					end
 
 					::nextShop::
 				end
+			elseif shop.model then
+				if not hasShopAccess(shop) then goto skipLoop end
+
+				exports.ox_target:removeModel(shop.model, shop.name)
+				exports.ox_target:addModel(shop.model, {
+						{
+								name = shop.name,
+								icon = shop.icon or 'fas fa-shopping-basket',
+								label = label,
+								onSelect = function()
+										client.openInventory('shop', { type = type })
+								end,
+								distance = 2
+						},
+				})
 			end
 		elseif shop.locations then
 			if not hasShopAccess(shop) then goto skipLoop end

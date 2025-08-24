@@ -68,29 +68,7 @@ return {
 		label = 'Dirty Money',
 	},
 
-	['burger'] = {
-		label = 'Burger',
-		weight = 220,
-		client = {
-			status = { hunger = 200000 },
-			anim = 'eating',
-			prop = 'burger',
-			usetime = 2500,
-			notification = 'You ate a delicious burger'
-		},
-	},
 
-	['sprunk'] = {
-		label = 'Sprunk',
-		weight = 350,
-		client = {
-			status = { thirst = 200000 },
-			anim = { dict = 'mp_player_intdrink', clip = 'loop_bottle' },
-			prop = { model = `prop_ld_can_01`, pos = vec3(0.01, 0.01, 0.06), rot = vec3(5.0, 5.0, -180.5) },
-			usetime = 2500,
-			notification = 'You quenched your thirst with a sprunk'
-		}
-	},
 
 	['parachute'] = {
 		label = 'Parachute',
@@ -171,19 +149,6 @@ return {
 			prop = { model = `prop_food_mustard`, pos = vec3(0.01, 0.0, -0.07), rot = vec3(1.0, 1.0, -1.5) },
 			usetime = 2500,
 			notification = 'You.. drank mustard'
-		}
-	},
-
-	['water'] = {
-		label = 'Water',
-		weight = 500,
-		client = {
-			status = { thirst = 200000 },
-			anim = { dict = 'mp_player_intdrink', clip = 'loop_bottle' },
-			prop = { model = `prop_ld_flow_bottle`, pos = vec3(0.03, 0.03, 0.02), rot = vec3(0.0, 0.0, -1.5) },
-			usetime = 2500,
-			cancel = true,
-			notification = 'You drank some refreshing water'
 		}
 	},
 
@@ -470,5 +435,105 @@ return {
 			client = { 
 				event = 'item_repair:useTireKit' 
 			}
+	},
+
+	-- Shop Items (Foods)
+	['rice'] = {
+		label = 'Rice',
+		weight = 1000,
+		client = {
+			status = { hunger = 1000000 }, -- 100%
+			anim = 'eating',
+			prop = 'rice',
+			usetime = 5000, -- 5 seconds
+			cancel = true,
+			notification = 'You ate some rice'
+		}
+	},
+	['pizza_ham'] = {
+		label = 'Pizza Ham',
+		weight = 1000,
+		client = {
+			status = { hunger = 1000000 }, -- 100%
+			anim = 'eating',
+			prop = 'rice',
+			usetime = 5000, -- 5 seconds
+			cancel = true,
+			notification = 'You ate a pizza ham'
+		}
+	},
+	['burger_chicken'] = {
+		label = 'Burger Chicken',
+		weight = 500,
+		client = {
+			status = { hunger = 1000000 }, -- 100%
+			anim = 'eating',
+			prop = 'burger',
+			usetime = 5000, -- 5 seconds
+			cancel = true,
+			notification = 'You ate a delicious burger'
+		},
+	},
+	['fries'] = {
+		label = 'Potato Fries',
+		weight = 200,
+		client = {
+			status = { hunger = 200000 }, -- 20%
+			anim = 'eating',
+			prop = 'burger',
+			usetime = 3000, -- 3 seconds
+			cancel = true,
+			notification = 'You ate some potato fries'
+		},
+	},
+
+	-- Shop items (Drinks)
+	['juice'] = {
+		label = 'Juice',
+		weight = 500,
+		client = {
+			status = { thirst = 1000000 }, -- 100%
+			anim = { dict = 'mp_player_intdrink', clip = 'loop_bottle' },
+			prop = { model = `prop_ld_can_01`, pos = vec3(0.01, 0.01, 0.06), rot = vec3(5.0, 5.0, -180.5) },
+			usetime = 5000, -- 5 seconds
+			cancel = true,
+			notification = 'You drank a juice'
+		}
+	},
+	['soda'] = {
+		label = 'Soda',
+		weight = 500,
+		client = {
+			status = { thirst = 1000000 }, -- 100%
+			anim = { dict = 'mp_player_intdrink', clip = 'loop_bottle' },
+			prop = { model = `prop_ld_can_01`, pos = vec3(0.01, 0.01, 0.06), rot = vec3(5.0, 5.0, -180.5) },
+			usetime = 5000, -- 5 seconds
+			cancel = true,
+			notification = 'You drank a soda'
+		}
+	},
+	['sprunk'] = {
+		label = 'Sprunk',
+		weight = 500,
+		client = {
+			status = { thirst = 1000000 }, -- 100%
+			anim = { dict = 'mp_player_intdrink', clip = 'loop_bottle' },
+			prop = { model = `prop_ld_can_01`, pos = vec3(0.01, 0.01, 0.06), rot = vec3(5.0, 5.0, -180.5) }, 
+			usetime = 5000, -- 5 seconds
+			cancel = true,
+			notification = 'You drank a sprunk'
+		}
+	},
+	['water'] = {
+		label = 'Water',
+		weight = 200,
+		client = {
+			status = { thirst = 200000 }, -- 20%
+			anim = { dict = 'mp_player_intdrink', clip = 'loop_bottle' },
+			prop = { model = `prop_ld_flow_bottle`, pos = vec3(0.03, 0.03, 0.02), rot = vec3(0.0, 0.0, -1.5) },
+			usetime = 3000, -- 3 seconds
+			cancel = true,
+			notification = 'You drank a water'
+		}
 	},
 }
